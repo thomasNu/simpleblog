@@ -1,3 +1,3 @@
 Simple Blog 
 ===========
-This is the didactical example from the book \"Extbase & Fluid\" by Patrick Lobacher.
+This is the didactical example from the book "Extbase & Fluid" by Patrick Lobacher.
