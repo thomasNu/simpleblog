@@ -1,0 +1,20 @@
+.layout1 {
+    background-color: #eee;
+    padding: 5px;
+    margin: 0px 5px 5px 0px;
+    border: 1px solid grey;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+.margin-right {
+    margin-right: 5px;  
+}
+a.btn, input.btn {
+    font-weigth: bold;
+    letter-spacing: 1px;
+    color: #ffffff;
+}
+a.btn:hover, input.btn:hover {
+    color: #ffff00;
+}

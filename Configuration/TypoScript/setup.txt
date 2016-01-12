@@ -1,0 +1,56 @@
+plugin.tx_simpleblog {
+	view {
+		templateRootPath = {$plugin.tx_simpleblog.view.templateRootPath}
+		partialRootPath = {$plugin.tx_simpleblog.view.partialRootPath}
+		layoutRootPath = {$plugin.tx_simpleblog.view.layoutRootPath}
+	}
+	persistence {
+        storagePid = 82,83
+        recursive = 1
+        classes {
+            Lobacher\Simpleblog\Domain\Model\Blog {
+                newRecordStoragePid = 83
+            }
+            Lobacher\Simpleblog\Domain\Model\Post {
+                newRecordStoragePid = 84
+            }
+            Lobacher\Simpleblog\Domain\Model\Comment {
+                newRecordStoragePid = 85
+            }
+            Lobacher\Simpleblog\Domain\Model\Tag {
+                newRecordStoragePid = 86
+            }
+        }
+    }
+    settings {
+        blog {
+            max = 5
+        }
+    }
+}
+plugin.tx_simpleblog._CSS_DEFAULT_STYLE (
+	textarea.f3-form-error {
+		background-color:#FF9F9F;
+		border: 1px #FF0000 solid;
+	}
+	input.f3-form-error {
+		background-color:#FF9F9F;
+		border: 1px #FF0000 solid;
+	}
+	.tx-simpleblog table {
+		border-collapse:separate;
+		border-spacing:10px;
+	}
+	.tx-simpleblog table th {
+		font-weight:bold;
+	}
+	.tx-simpleblog table td {
+		vertical-align:top;
+	}
+	.typo3-messages .message-error {
+		color:red;
+	}
+	.typo3-messages .message-ok {
+		color:green;
+	}
+)

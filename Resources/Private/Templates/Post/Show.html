@@ -1,0 +1,14 @@
+<f:layout name="default" />
+
+<f:section name="content">
+    <h1>Post ansehen (Blog: {blog.title})</h1>
+    
+    <dl class="dl-horizontal">
+        <dt>Post-Titel:</dt>
+        <dd>{post.title}</dd>
+        <dt>Post-Inhalt:</dt>
+        <dd>{post.content}</dd>
+    </dl>
+    
+    <f:link.action action="list" controller="Blog" arguments="{blog: blog}" class="btn btn-primary">Zurück zur Blog-Liste</f:link.action>
+</f:section>

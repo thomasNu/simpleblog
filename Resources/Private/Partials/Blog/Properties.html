@@ -1,0 +1,27 @@
+
+<table class="tx-simpleblog" >
+	<tr>
+		<td>
+			<f:translate key="tx_simpleblog_domain_model_blog.title" />
+		</td>
+		<td>
+		{blog.title}
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<f:translate key="tx_simpleblog_domain_model_blog.description" />
+		</td>
+		<td>
+		{blog.description}
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<f:translate key="tx_simpleblog_domain_model_blog.image" />
+		</td>
+		<td>
+				<f:image src="{blog.image.originalResource.publicUrl}" width="200"/>
+		</td>
+	</tr>
+</table>
