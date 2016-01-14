@@ -13,7 +13,11 @@
     <f:if condition="{blog.posts}">
         <ul class="list-group">
             <f:for each="{blog.posts}" as="post">
-                <li class="list-group-item">{post.title}
+                <li class="list-group-item">
+                    {post.title} [
+                    <f:for each="{post.tags}" as="tag" iteration="count">
+                        {tag.tagvalue}{f:if(condition: count.isLast, then: ' ]', else: ',')}
+                    </f:for>
                     <f:link.action action="deleteConfirm" controller="Post" 
                         arguments="{blog: blog, post: post}" class="btn btn-primary btn-xs pull-right">DEL</f:link.action>
                     <f:link.action action="updateForm" controller="Post" 

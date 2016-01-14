@@ -8,6 +8,12 @@
         <dd>{post.title}</dd>
         <dt>Post-Inhalt:</dt>
         <dd>{post.content}</dd>
+        <dt>Post-Tags:</dt>
+        <dd>
+            <f:for each="{post.tags}" as="tag">
+                <span class="label label-default">{tag.tagvalue}</span>
+            </f:for>
+        </dd>
     </dl>
     
     <f:link.action action="list" controller="Blog" arguments="{blog: blog}" class="btn btn-primary">Zurück zur Blog-Liste</f:link.action>

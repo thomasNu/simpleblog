@@ -65,6 +65,7 @@ class PostController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
             \Lobacher\Simpleblog\Domain\Model\Post $post = NULL) {
 		$this->view->assign('blog', $blog);
 		$this->view->assign('post', $post);
+        $this->view->assign('tags', $this->objectManager->get('Lobacher\\Simpleblog\\Domain\\Repository\\TagRepository')->findAll());
 	}
 	/**
 	 * add action - adds a post to the repository
@@ -93,6 +94,7 @@ class PostController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
             \Lobacher\Simpleblog\Domain\Model\Post $post) {
 		$this->view->assign('blog', $blog);
 		$this->view->assign('post', $post);
+        $this->view->assign('tags', $this->objectManager->get('Lobacher\\Simpleblog\\Domain\\Repository\\TagRepository')->findAll());
 	}
 	/**
 	 * update action - updates a post in the repository
