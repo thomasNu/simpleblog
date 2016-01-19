@@ -5,7 +5,7 @@ plugin.tx_simpleblog {
 		layoutRootPath = {$plugin.tx_simpleblog.view.layoutRootPath}
 	}
 	persistence {
-        storagePid = 82,83
+        storagePid = 82,83,28
         recursive = 1
         classes {
             Lobacher\Simpleblog\Domain\Model\Blog {
@@ -25,7 +25,9 @@ plugin.tx_simpleblog {
     settings {
         blog {
             max = 5
+            users = 1,31,8,20,23,18
         }
+        loginpage = {$content.idLogin}
     }
 }
 plugin.tx_simpleblog._CSS_DEFAULT_STYLE (

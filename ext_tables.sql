@@ -44,7 +44,7 @@ CREATE TABLE tx_simpleblog_domain_model_post (
 	content text NOT NULL,
 	postdate int(11) DEFAULT '0' NOT NULL,
 	comments int(11) unsigned DEFAULT '0' NOT NULL,
-	autor int(11) unsigned DEFAULT '0',
+	author int(11) unsigned DEFAULT '0',
 	tags int(11) unsigned DEFAULT '0' NOT NULL,
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,

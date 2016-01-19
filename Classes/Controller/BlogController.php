@@ -40,6 +40,19 @@ class BlogController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 */
 	protected $blogRepository = NULL;
 
+    /**
+     * Initialize action - inits for all aktions
+     *
+	 * @return void
+     */
+    public function initializeAction() {
+        $action = $this->request->getControllerActionName();
+        if ((($this->settings['blog']['users']) ? : '0') == '0' && $action != 'list' && $action != 'show') {
+            if (!$GLOBALS['TSFE']->fe_user->user['uid']) {
+                $this->redirect(NULL, NULL, NULL, NULL, $this->settings['loginpage']);
+            }
+        }
+    }
 	/**
 	 * action list
 	 *

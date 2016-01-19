@@ -65,9 +65,9 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Post author
 	 *
-	 * @var \Lobacher\Simpleblog\Domain\Model\Author
+	 * @var \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
 	 */
-	protected $autor = NULL;
+	protected $author = NULL;
 
 	/**
 	 * Post tags
@@ -194,22 +194,22 @@ class Post extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * Returns the autor
+	 * Returns the author
 	 *
-	 * @return \Lobacher\Simpleblog\Domain\Model\Author $autor
+	 * @return \TYPO3\CMS\Extbase\Domain\Model\FrontendUser $author
 	 */
-	public function getAutor() {
-		return $this->autor;
+	public function getAuthor() {
+		return $this->author;
 	}
 
 	/**
-	 * Sets the autor
+	 * Sets the author
 	 *
-	 * @param \Lobacher\Simpleblog\Domain\Model\Author $autor
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\FrontendUser $author
 	 * @return void
 	 */
-	public function setAutor(\Lobacher\Simpleblog\Domain\Model\Author $autor) {
-		$this->autor = $autor;
+	public function setAuthor(\TYPO3\CMS\Extbase\Domain\Model\FrontendUser $author) {
+		$this->author = $author;
 	}
 
 	/**

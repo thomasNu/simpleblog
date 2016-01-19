@@ -14,6 +14,8 @@
                 <span class="label label-default">{tag.tagvalue}</span>
             </f:for>
         </dd>
+        <dt>Post-Autor:</dt>
+        <dd>{post.author.name} (Email: {post.author.email})</dd>
     </dl>
     
     <f:link.action action="list" controller="Blog" arguments="{blog: blog}" class="btn btn-primary">Zurück zur Blog-Liste</f:link.action>

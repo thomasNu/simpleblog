@@ -28,7 +28,7 @@ namespace Lobacher\Simpleblog\Domain\Repository;
  ***************************************************************/
 
 /**
- * The repository for Posts
+ * The repository for Tags
  */
 class TagRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	

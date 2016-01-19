@@ -8,6 +8,7 @@ if (!defined('TYPO3_MODE')) {
 	'Bloglisting',
 	'Simpleblog - Bloglisting'
 );
+$TCA['fe_users']['ctrl']['label'] = 'name';
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Simple Blog Extension');
 

@@ -1,7 +1,7 @@
 <h1>{headline}</h1>
 <f:form action="{action}" object="{post}" name="post" arguments="{blog: blog}" additionalAttributes="{role: 'form'}">
     <div class="form-group">
-        <label>Post-Titel</label>
+        <label>Post-Titel </label>
         <f:form.textfield property="title" class="form-control" />
     </div>
     <div class="form-group">
@@ -12,5 +12,12 @@
         <label>Post-Tags</label>
         <f:form.select options="{tags}" optionLabelField="tagvalue" property="tags" size="5" multiple="1" class="form-control" />
     </div>
+    <f:if condition="{settings.blog.users} != 0">
+        <div class="form-group">
+            <label>Post-Author</label>
+                <f:form.select options="{authors}" optionLabelField="name" prependOptionLabel="Autor wählen" prependOptionValue="0" 
+                    property="author" class="form-control" />
+        </div>
+    </f:if>
     <f:form.submit value="{submitmessage}" class="btn btn-primary" />
 </f:form>

@@ -27,6 +27,9 @@ namespace Lobacher\Simpleblog\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+ use Lobacher\Simpleblog\Domain\Model\Blog; 
+ use Lobacher\Simpleblog\Domain\Model\Post; 
+
 /**
  * PostController
  */
@@ -40,6 +43,27 @@ class PostController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 */
 	protected $postRepository = NULL;
 
+	/**
+	 * FrontendUserRepository
+	 *
+	 * @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository
+	 * @inject
+	 */
+	protected $frontendUserRepository = NULL;
+
+    /**
+     * Initialize action - inits for all aktions
+     *
+	 * @return void
+     */
+    public function initializeAction() {
+        $action = $this->request->getControllerActionName();
+        if ((($this->settings['blog']['users']) ? : '0') == '0' && $action != 'show') {
+            if (!$GLOBALS['TSFE']->fe_user->user['uid']) {
+                $this->redirect(NULL, NULL, NULL, NULL, $this->settings['loginpage']);
+            }
+        }
+    }
     /**
      * show action - displays a single post
      *
@@ -47,9 +71,7 @@ class PostController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
      * @param \Lobacher\Simpleblog\Domain\Model\Post $post
 	 * @return void
      */
-    public function showAction(
-            \Lobacher\Simpleblog\Domain\Model\Blog $blog,
-            \Lobacher\Simpleblog\Domain\Model\Post $post) {
+    public function showAction(Blog $blog, Post $post) {
         $this->view->assign('blog', $blog);
         $this->view->assign('post', $post);
     }
@@ -60,13 +82,12 @@ class PostController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 * @param \Lobacher\Simpleblog\Domain\Model\Post $post
 	 * @return void
 	 */
-	public function addFormAction(
-            \Lobacher\Simpleblog\Domain\Model\Blog $blog,
-            \Lobacher\Simpleblog\Domain\Model\Post $post = NULL) {
+	public function addFormAction(Blog $blog, Post $post = NULL) {
 		$this->view->assign('blog', $blog);
 		$this->view->assign('post', $post);
         $this->view->assign('tags', $this->objectManager->get('Lobacher\\Simpleblog\\Domain\\Repository\\TagRepository')->findAll());
-	}
+        $this->assignAuthorSelectOptions();
+	}   
 	/**
 	 * add action - adds a post to the repository
 	 *
@@ -74,10 +95,11 @@ class PostController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 * @param \Lobacher\Simpleblog\Domain\Model\Post $post
 	 * @return void
      */
-    public function addAction(
-            \Lobacher\Simpleblog\Domain\Model\Blog $blog,
-            \Lobacher\Simpleblog\Domain\Model\Post $post) {
+    public function addAction(Blog $blog, Post $post) {
         $post->setPostdate(new \DateTime());
+        if ((($this->settings['blog']['users']) ? : '0') == '0') {
+            $post->setAuthor($this->frontendUserRepository->findByUid($GLOBALS['TSFE']->fe_user->user['uid']));
+        }
         $blog->addPost($post);
         $this->objectManager->get('Lobacher\\Simpleblog\\Domain\\Repository\\BlogRepository')->update($blog);
         $this->redirect('show', 'Blog', NULL, array('blog' => $blog));
@@ -89,12 +111,11 @@ class PostController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 * @param \Lobacher\Simpleblog\Domain\Model\Post $post
 	 * @return void
 	 */
-	public function updateFormAction(
-            \Lobacher\Simpleblog\Domain\Model\Blog $blog,
-            \Lobacher\Simpleblog\Domain\Model\Post $post) {
+	public function updateFormAction(Blog $blog, Post $post) {
 		$this->view->assign('blog', $blog);
 		$this->view->assign('post', $post);
         $this->view->assign('tags', $this->objectManager->get('Lobacher\\Simpleblog\\Domain\\Repository\\TagRepository')->findAll());
+        $this->assignAuthorSelectOptions();
 	}
 	/**
 	 * update action - updates a post in the repository
@@ -103,9 +124,7 @@ class PostController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 * @param \Lobacher\Simpleblog\Domain\Model\Post $post
 	 * @return void
 	 */
-	public function updateAction(
-            \Lobacher\Simpleblog\Domain\Model\Blog $blog,
-            \Lobacher\Simpleblog\Domain\Model\Post $post) {
+	public function updateAction(Blog $blog, Post $post) {
 		$this->postRepository->update($post);               
 		$this->redirect('show', 'Blog', NULL, array('blog' => $blog));
 	}
@@ -116,24 +135,29 @@ class PostController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 * @param \Lobacher\Simpleblog\Domain\Model\Post $post
 	 * @return void
 	 */
-	public function deleteConfirmAction(
-            \Lobacher\Simpleblog\Domain\Model\Blog $blog,
-            \Lobacher\Simpleblog\Domain\Model\Post $post) {
+	public function deleteConfirmAction(Blog $blog, Post $post) {
 		$this->view->assign('blog', $blog);
 		$this->view->assign('post', $post);
 	}
 	/**
 	 * delete action - deletes a post in the repository
 	 *
-	 * @param \Lobacher\Simpleblog\Domain\Model\Post $blog
+	 * @param \Lobacher\Simpleblog\Domain\Model\Blog $blog
+	 * @param \Lobacher\Simpleblog\Domain\Model\Post $post
 	 * @return void
 	 */
-	public function deleteAction(
-            \Lobacher\Simpleblog\Domain\Model\Blog $blog,
-            \Lobacher\Simpleblog\Domain\Model\Post $post) {
+	public function deleteAction(Blog $blog, Post $post) {
         $blog->removePost($post);
         $this->objectManager->get('Lobacher\\Simpleblog\\Domain\\Repository\\BlogRepository')->update($blog);
 		$this->postRepository->remove($post);               
 		$this->redirect('show', 'Blog', NULL, array('blog' => $blog));
+	}
+	protected function assignAuthorSelectOptions() {
+        $authors = array();
+        $users = explode(',', ($this->settings['blog']['users']) ? : '0');
+        foreach ($users as $key => $uid) {
+            $autors[] = $this->frontendUserRepository->findByUid($uid);
+        }
+        $this->view->assign('authors', $autors);
 	}
 }
