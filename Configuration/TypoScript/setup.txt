@@ -29,6 +29,17 @@ plugin.tx_simpleblog {
         }
         loginpage = {$content.idLogin}
     }
+    ajax = PAGE
+    ajax {
+        typeNum = 9999
+        config {
+            disableAllHeaderCode = 1
+            additionalHeaders = Content-type:application/json
+            xhtml_cleaning = 0
+            admPanel = 0
+        }
+        10 < tt_content.list.20.simpleblog_bloglisting
+    }        
 }
 plugin.tx_simpleblog._CSS_DEFAULT_STYLE (
 	textarea.f3-form-error {

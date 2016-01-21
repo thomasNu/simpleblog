@@ -26,9 +26,9 @@ namespace Lobacher\Simpleblog\Controller;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-
- use Lobacher\Simpleblog\Domain\Model\Blog; 
- use Lobacher\Simpleblog\Domain\Model\Post; 
+use Lobacher\Simpleblog\Domain\Model\Blog; 
+use Lobacher\Simpleblog\Domain\Model\Post; 
+use Lobacher\Simpleblog\Domain\Model\Comment; 
 
 /**
  * PostController
@@ -58,7 +58,7 @@ class PostController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
      */
     public function initializeAction() {
         $action = $this->request->getControllerActionName();
-        if ((($this->settings['blog']['users']) ? : '0') == '0' && $action != 'show') {
+        if ((($this->settings['blog']['users']) ? : '0') == '0' && $action != 'show' && $action != 'ajax') {
             if (!$GLOBALS['TSFE']->fe_user->user['uid']) {
                 $this->redirect(NULL, NULL, NULL, NULL, $this->settings['loginpage']);
             }
@@ -152,6 +152,28 @@ class PostController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$this->postRepository->remove($post);               
 		$this->redirect('show', 'Blog', NULL, array('blog' => $blog));
 	}
+	/**
+	 * ajax action - deletes a post in the repository
+	 *
+	 * @param \Lobacher\Simpleblog\Domain\Model\Post $post
+	 * @param \Lobacher\Simpleblog\Domain\Model\
+	 * @return bool|string
+	 */
+	public function ajaxAction(Post $post, Comment $comment = NULL) {
+        if ($comment->getComment()== '') return FALSE;
+        $comment->setCommentdate(new \DateTime());
+        $post->addComment($comment);
+        $this->postRepository->update($post);
+        $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager')->persistAll();
+        $comments = $post->getComments();
+        foreach ($comments as $comment){
+            $json[$comment->getUid()] = array(
+                'comment'=>$comment->getComment(),
+                'commentdate' => $comment->getCommentdate()
+            );
+        }
+        return json_encode($json);
+    }
 	protected function assignAuthorSelectOptions() {
         $authors = array();
         $users = explode(',', ($this->settings['blog']['users']) ? : '0');
